@@ -19,12 +19,12 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           path: "src"
 
       - name: Checkout builds
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: "builds"
           path: "builds"
@@ -34,9 +34,9 @@ jobs:
         run: rm -f $GITHUB_WORKSPACE/builds/*.cs3 || true
 
       - name: Setup JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
-          distribution: adopt
+          distribution: temurin
           java-version: 17
 
       - name: Setup Android SDK
@@ -48,14 +48,16 @@ jobs:
           chmod +x gradlew
           ./gradlew make makePluginsJson
           mkdir -p $GITHUB_WORKSPACE/builds
-          cp **/build/*.cs3 $GITHUB_WORKSPACE/builds
-          cp build/plugins.json $GITHUB_WORKSPACE/builds
+          find . -name "*.cs3" -path "*/build/*" -exec cp {} $GITHUB_WORKSPACE/builds/ \;
+          cp build/plugins.json $GITHUB_WORKSPACE/builds/
+          ls -la $GITHUB_WORKSPACE/builds
 
       - name: Push builds
         run: |
           cd $GITHUB_WORKSPACE/builds
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Actions"
+          if [ ! -d .git ]; then git init -b builds; git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git; fi
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
           git add .
-          git commit --amend -m "Build $GITHUB_SHA" || exit 0
-          git push --force
+          git commit -m "Build $GITHUB_SHA" || exit 0
+          git push --force origin HEAD:builds
