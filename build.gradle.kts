@@ -12,7 +12,7 @@ buildscript {
 
     dependencies {
         classpath("com.android.tools.build:gradle:8.9.1")
-        classpath("com.github.recloudstream:gradle:main-SNAPSHOT")
+        classpath("com.github.recloudstream:gradle:94e955836b")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.4.0")
     }
 }
