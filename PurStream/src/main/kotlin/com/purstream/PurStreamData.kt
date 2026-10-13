@@ -1,0 +1,33 @@
+package com.purstream
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class ApiResponse<T>(val type: String? = null, val data: ApiData<T>? = null)
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class ApiData<T>(val count: Int? = null, val items: T? = null)
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class MediaItem(val id: Int? = null, val type: String? = null, val title: String? = null, @JsonProperty("large_poster_path") val largePosterPath: String? = null, @JsonProperty("small_poster_path") val smallPosterPath: String? = null, @JsonProperty("wallpaper_poster_path") val wallpaperPosterPath: String? = null, val isAnime: Boolean? = null, val lang: Int? = null, val runtime: Int? = null, @JsonProperty("release_date") val releaseDate: String? = null, @JsonProperty("end_date") val endDate: String? = null)
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class Carousel(val id: Int? = null, val title: String? = null, val movies: CarouselMovies? = null)
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class CarouselMovies(val items: List<MediaItem>? = null)
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class SheetItem(val id: Int? = null, val tmdbId: Int? = null, val type: String? = null, val isAnime: Boolean? = null, val title: String? = null, val overview: String? = null, val ageLimit: Int? = null, val categories: List<Category>? = null, val releaseDate: String? = null, val posters: Posters? = null, val runtime: Runtime? = null, val note: Note? = null, val seasons: Int? = null, val episodes: Int? = null, val urls: List<VideoUrl>? = null)
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class Category(val id: Int? = null, val name: String? = null)
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class Posters(val large: String? = null, val small: String? = null, val wallpaper: String? = null, val original: String? = null)
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class Runtime(val minutes: Int? = null)
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class Note(val tmdb: Tmdb? = null)
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class Tmdb(val average: Double? = null)
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class VideoUrl(val url: String? = null, val name: String? = null)
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class SourceEntry(val name: String? = null, val url: String = "")
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class ApiSearchItems(val movies: List<MediaItem>? = null, val items: List<MediaItem>? = null)
